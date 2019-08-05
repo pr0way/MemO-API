@@ -27,6 +27,19 @@ class UserController {
         }
     }
 
+    async show({ request }) {
+        const { id } = request.params
+        return await User.findBy('id', id)
+    }
+
+    async destroy({ request, response }) {
+        const { id } = request.params
+        const user = await User.find(id)
+
+        await user.delete()
+        return response.status(200).json({ message: 'User deleted' })
+    }
+
 }
 
 module.exports = UserController
