@@ -13,12 +13,7 @@ class UserController {
             const { username, email, password } = request.post()
             // TODO: Validate data befere send to database
 
-            const user = new User()
-            user.username = username
-            user.email = email
-            user.password = password
-
-            await user.save()
+            await User.create({ username, email, password })
 
             return response.status(201).json({ message: 'User created successfully' })
         } catch (e) {
@@ -30,6 +25,16 @@ class UserController {
     async show({ request }) {
         const { id } = request.params
         return await User.findBy('id', id)
+    }
+
+    async update({ request, response }) {
+        const { id } = request.params;
+        const { username, email, password } = request.all()
+        const user = await User.findBy('id', id)
+        user.merge({ username, email, password })
+        user.save()
+
+        return response.status(200).json({ message: 'User updated successfully' })
     }
 
     async destroy({ request, response }) {
