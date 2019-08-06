@@ -18,5 +18,5 @@ const Route = use('Route')
 
 // API V1
 Route.group(() => {
-  Route.resource('users', 'UserController')
+  Route.resource('users', 'UserController').except(['create', 'edit'])
 }).prefix('api/v1')
